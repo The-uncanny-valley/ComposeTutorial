@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.uncannyvalley.composetutorial.ui.theme.ComposeTutorialTheme
+import androidx.compose.foundation.lazy.items
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +67,7 @@ fun MessageCard(msg: Message) {
             Surface(shape = MaterialTheme.shapes.medium, shadowElevation = 1.dp) {
                 Text(
                     text = msg.body,
-                    modifier = Modifier.padding(all = 4.dp),
+                    modifier = Modifier.padding(all = 8.dp),
                     style = MaterialTheme.typography.bodyMedium
                 )
             }
@@ -80,14 +82,35 @@ fun MessageCard(msg: Message) {
     name = "Dark Mode"
 )
 
-@Preview
 @Composable
 fun PreviewMessageCard() {
     ComposeTutorialTheme {
-        Surface {
+        Surface() {
             MessageCard(
                 msg = Message("Lexi", "Hey, take a look at Jetpack Compose, it's great!")
             )
+        }
+    }
+}
+
+@Composable
+fun Conversation(messages: List<Message>) {
+    LazyColumn {
+        items(messages) { message ->
+            MessageCard(message)
+        }
+    }
+}
+
+@Preview(
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
+@Preview
+@Composable
+fun PreviewConversation() {
+    ComposeTutorialTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Conversation(SampleData.conversationSample)
         }
     }
 }
